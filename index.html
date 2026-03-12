@@ -31,20 +31,27 @@
             justify-content: center;
             margin: 0;
             padding: 0;
+            flex-wrap: wrap; /* Agar rapi di HP */
         }
 
-        nav ul li { margin: 0 15px; }
+        nav ul li { margin: 5px 15px; }
 
         nav ul li a {
             color: white;
             text-decoration: none;
             font-weight: bold;
-            transition: color 0.3s;
+            transition: all 0.3s;
             font-size: 15px;
             cursor: pointer;
+            padding: 5px 10px;
+            border-bottom: 2px solid transparent;
         }
 
-        nav ul li a:hover, nav ul li a.active { color: #d4af37; }
+        /* Efek saat di-hover atau menu Aktif */
+        nav ul li a:hover, nav ul li a.active { 
+            color: #d4af37; 
+            border-bottom: 2px solid #d4af37;
+        }
 
         /* HERO SECTION */
         .hero {
@@ -52,25 +59,26 @@
                         url('https://images.unsplash.com/photo-1548625149-fc4a29cf7092?q=80&w=2000') center/cover no-repeat;
             color: white;
             text-align: center;
-            padding: 100px 20px;
+            padding: 80px 20px;
         }
 
         /* SECTION MANAGEMENT */
         .content-section {
-            display: none; /* Sembunyikan semua section secara default */
-            padding: 60px 20px;
+            display: none; /* Sembunyikan semua secara default */
+            padding: 40px 20px;
             max-width: 1000px;
             margin: auto;
-            min-height: 400px;
-            animation: fadeIn 0.5s;
+            min-height: 300px;
         }
 
+        /* Menampilkan section yang aktif */
         .content-section.active {
-            display: block; /* Tampilkan hanya section yang aktif */
+            display: block; 
+            animation: fadeIn 0.6s ease;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -83,7 +91,7 @@
         }
 
         /* TABEL & CARD STYLE */
-        .table-container { overflow-x: auto; }
+        .table-container { overflow-x: auto; margin-top: 20px; }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -116,14 +124,16 @@
             background-color: #25d366; color: #FFF; border-radius: 50px;
             display: flex; align-items: center; justify-content: center;
             text-decoration: none; box-shadow: 2px 5px 15px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
         }
+        .float-wa:hover { transform: scale(1.1); }
     </style>
 </head>
 <body>
 
     <nav>
         <ul>
-            <li><a onclick="showSection('beranda')" id="nav-beranda">Beranda</a></li>
+            <li><a onclick="showSection('beranda')" id="nav-beranda" class="active">Beranda</a></li>
             <li><a onclick="showSection('tentang')" id="nav-tentang">Tentang Kami</a></li>
             <li><a onclick="showSection('pelayanan')" id="nav-pelayanan">Pelayanan</a></li>
             <li><a onclick="showSection('media')" id="nav-media">Media</a></li>
@@ -140,8 +150,8 @@
     <section id="beranda" class="content-section active">
         <h2>Profil & Sejarah Singkat</h2>
         <p>Gereja ST. BENEDICTUS Stasi Sidobasuki berdiri sebagai pusat iman bagi umat Katolik di wilayah Sidobasuki. Kami berkomitmen untuk terus bertumbuh dalam persaudaraan dan pelayanan kasih.</p>
-        <p><strong>Santo Benediktus:</strong> Bapak Monastisisme Barat yang mengajarkan prinsip <em>"Ora et Labora"</em> (Berdoa dan Bekerja). Beliau adalah pelindung Eropa yang menekankan kerendahan hati dan moderasi.</p>
-        <div class="card" style="margin-top: 20px;">
+        <p><strong>Santo Benediktus:</strong> Bapak Monastisisme Barat yang mengajarkan prinsip <em>"Ora et Labora"</em> (Berdoa dan Bekerja).</p>
+        <div class="card">
             <p>Peringatan wajib St. Benediktus dirayakan setiap tanggal 11 Juli.</p>
         </div>
     </section>
@@ -186,11 +196,8 @@
 
     <section id="media" class="content-section">
         <h2>Media & Galeri</h2>
-        <p>Bagian ini akan berisi dokumentasi foto dan video kegiatan gereja.</p>
-        <div class="card-container">
-            <div class="card" style="text-align: center; padding: 50px;">
-                <p>Galeri Foto Segera Hadir</p>
-            </div>
+        <div class="card" style="text-align: center; padding: 50px;">
+            <p>📷 Galeri Foto & Video Segera Hadir</p>
         </div>
     </section>
 
@@ -198,8 +205,8 @@
         <h2>Kontak & Lokasi</h2>
         <p><strong>Alamat:</strong> Jl. Lintas Sumatera KM.36 , Kabupaten Pesawaran, Lampung</p>
         <p><strong>Email:</strong> stbenedictus.sidobasuki@gmail.com</p>
-        <div style="border-radius: 12px; overflow: hidden; margin-top: 20px; background: #ddd; height: 300px; display: flex; align-items: center; justify-content: center;">
-            <p>Peta Lokasi (Iframe)</p>
+        <div style="border-radius: 12px; overflow: hidden; margin-top: 20px; background: #ddd; height: 300px; display: flex; align-items: center; justify-content: center; border: 1px solid #ccc;">
+            <p>Peta Lokasi Google Maps</p>
         </div>
     </section>
 
@@ -215,25 +222,30 @@
 
     <script>
         function showSection(sectionId) {
-            // 1. Sembunyikan semua section
+            // 1. Sembunyikan SEMUA section terlebih dahulu
             const sections = document.querySelectorAll('.content-section');
             sections.forEach(section => {
                 section.classList.remove('active');
             });
 
-            // 2. Tampilkan section yang dipilih
-            const activeSection = document.getElementById(sectionId);
-            activeSection.classList.add('active');
+            // 2. Tampilkan HANYA section yang diklik
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
 
-            // 3. Ubah warna menu navigasi yang aktif
+            // 3. Update style menu navigasi (warna emas)
             const navLinks = document.querySelectorAll('nav ul li a');
             navLinks.forEach(link => {
                 link.classList.remove('active');
             });
             document.getElementById('nav-' + sectionId).classList.add('active');
 
-            // 4. Scroll ke atas section agar terlihat jelas
-            window.scrollTo({ top: document.querySelector('.hero').offsetHeight - 50, behavior: 'smooth' });
+            // 4. Otomatis scroll ke area konten agar pengguna langsung melihat isinya
+            window.scrollTo({
+                top: document.querySelector('header').offsetHeight - 20,
+                behavior: 'smooth'
+            });
         }
     </script>
 
